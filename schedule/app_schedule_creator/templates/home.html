@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+{% block title %} Home Page {% endblock %}
+{% block css %}home.css{% endblock %}
+{% block content %}
+
+<div class="hero">
+    <h1 class="main-header">Create your schedule automatically!</h1>
+</div>
+
+<div>
+    <table>
+        <tr>
+            <td>
+                <label for="semester" class="main-title">Select your semester: </label>
+            </td>
+            <td style="padding-left: 1em">
+                <select name="semester" id="semester">
+                    <option value="Fall">Fall</option>
+                    <option value="Winter">Winter</option>
+                    <option value="Spring">Spring/Summer</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+{% endblock %}
