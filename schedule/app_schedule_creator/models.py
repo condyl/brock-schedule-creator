@@ -11,3 +11,9 @@ class Course(models.Model):
     course_start_date = models.DateField()
     course_end_date = models.DateField()
     course_instructor = models.CharField(max_length=100)
+    course_term = models.CharField(max_length=10)
+    course_year = models.IntegerField()
+
+class Upload(models.Model):
+    upload_file = models.FileField()    
+    upload_date = models.DateTimeField(auto_now_add =True)
