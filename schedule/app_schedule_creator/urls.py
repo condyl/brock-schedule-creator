@@ -9,4 +9,5 @@ urlpatterns = [
     path('about', views.about, name='about'),
     path('upload', views.upload, name='upload'),
     path('import_csv_to_database', views.import_csv_to_database, name='import_csv_to_database'),
+    path('schedule', views.schedule, name='schedule'),
 ]

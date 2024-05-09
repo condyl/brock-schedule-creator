@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from . import models
 import csv
+from .schedule import get_course_options
 
 # Create your views here.
 def home(request):
@@ -9,14 +10,36 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+def schedule(request):
+    context={}
+    semester = request.POST.get('semester')
+    courses_str = request.POST.get('courses')
+    courses = courses_str.split(',')
+    for i in range(len(courses)):
+        courses[i] = courses[i].strip()
+    #print(courses)
+    valid_course_options = get_course_options(courses, semester, 2024)
+    for choice in valid_course_options:
+        for courses in choice:
+        #print(option)
+            for course in courses:
+                print(course.course_name, course.course_type, course.course_days, course.course_start_time, course.course_end_time, course.course_instructor)
+    
+    
+    #print(course_options)
+
+    return render(request, 'schedule.html', context=context)
+
 def upload(request):
     return render(request, 'upload.html')
 
 def import_csv_to_database(request):
-    context = {}
-
     if len(request.FILES) != 0:
         file = request.FILES['file'] 
+        #uploaded_file = models.Upload()
+        #uploaded_file.upload_file = file
+        #uploaded_file.save()
+
         decoded_file = file.read().decode('utf-8').splitlines()
         reader = csv.DictReader(decoded_file)
         for row in reader:
@@ -38,10 +61,11 @@ def import_csv_to_database(request):
             course.course_term = "spring"
             course.course_year = "2024"
             course.save()
-
     else:
         return redirect("upload")
         
-
+    uploaded_file = models.Upload()
+    uploaded_file.upload_file = request.FILES['file']
+    uploaded_file.save()
 
     return render(request, 'import_csv_to_database.html')
