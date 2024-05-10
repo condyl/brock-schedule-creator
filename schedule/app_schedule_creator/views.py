@@ -24,7 +24,7 @@ def schedule(request):
         #print(option)
             for course in courses:
                 print(course.course_name, course.course_type, course.course_days, course.course_start_time, course.course_end_time, course.course_instructor)
-    
+        print()
     
     #print(course_options)
 
