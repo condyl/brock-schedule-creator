@@ -1,8 +1,57 @@
-{% extends "base.html" %} 
-{% block title %} Schedule Choices {% endblock %}
-{% block css %}none.css{% endblock %}
+{% extends "base.html" %} {% block title %} Schedule Choices {% endblock %} {% block css %}none.css{% endblock %} 
 {% block content %}
 
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var calendarEl = document.getElementById("calendar");
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            headerToolbar: {
+                left: "prev,next today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay",
+            },
+            initialView: "timeGridWeek",
+            dateClick: function() {
+                alert('a day has been clicked!');
+              },
+        });
+        /*
+        {% for choice in valid_course_options %}
+
+            {% for course in choice %}
+
+                {% for section in course %}
+
+                    calendar.addEvent({
+                        title: "{{section.course_code}} {{section.course_type}}",
+                        start: "05-05-2024",
+                        end: "05-05-2024",
+                        startTime: "{{section.course_start_time}}",
+                        endTime: "{{section.course_end_time}}",
+                    });
+                    console.log("{{section.course_code}}","{{section.course_type}}","{{section.course_start_date}}","{{section.course_end_date}}","{{section.course_start_time}}","{{section.course_end_time}}")
+                
+                {% endfor %}
+
+            {% endfor %}
+
+        {% endfor %}
+        */
+
+        calendar.addEvent({
+            title: "{{section.course_code}} {{section.course_type}}",
+            start: "05-05-2024",
+            end: "05-05-2024",
+            startTime: "{{section.course_start_time}}",
+            endTime: "{{section.course_end_time}}",
+        });
+        calendar.render();
+    });
+</script>
+
 <h1>Schedule Options</h1>
+
+<div id="calendar"></div>
 
 {% endblock %}

@@ -19,12 +19,15 @@ def schedule(request):
         courses[i] = courses[i].strip()
     #print(courses)
     valid_course_options = get_course_options(courses, semester, 2024)
-    for choice in valid_course_options:
-        for courses in choice:
-        #print(option)
-            for course in courses:
-                print(course.course_name, course.course_type, course.course_days, course.course_start_time, course.course_end_time, course.course_instructor)
-        print()
+    context['valid_course_options'] = valid_course_options
+    print(context['valid_course_options'][0][0][0].course_start_time)
+    #for choice in valid_course_options:
+    #    print(choice)
+    #    for courses in choice:
+    #        for course in courses:
+    #            #print(course.course_name, course.course_type, course.course_days, course.course_start_time, course.course_end_time, course.course_instructor)
+    #            pass
+    #    print()
     
     #print(course_options)
 
