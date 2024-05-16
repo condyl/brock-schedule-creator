@@ -16,36 +16,35 @@
                 alert('a day has been clicked!');
               },
         });
-        /*
-        {% for choice in valid_course_options %}
-
-            {% for course in choice %}
-
-                {% for section in course %}
-
-                    calendar.addEvent({
-                        title: "{{section.course_code}} {{section.course_type}}",
-                        start: "05-05-2024",
-                        end: "05-05-2024",
-                        startTime: "{{section.course_start_time}}",
-                        endTime: "{{section.course_end_time}}",
-                    });
-                    console.log("{{section.course_code}}","{{section.course_type}}","{{section.course_start_date}}","{{section.course_end_date}}","{{section.course_start_time}}","{{section.course_end_time}}")
-                
-                {% endfor %}
-
-            {% endfor %}
-
-        {% endfor %}
-        */
-
+        let daysOfWeek = [];
+        {% for choice in valid_course_options %}{% for course in choice %}{% for section in course %}
+        console.log('{{section.course_start_time|time:"H:i:s"}}',"{{section.course_start_time}}")
+        
+        for (let i = 0; i < '{{section.course_days}}'.length; i++) {
+            if ('{{section.course_days}}'[i] == 'M') {
+                daysOfWeek.push('1');
+            } else if ('{{section.course_days}}'[i] == 'T') {
+                daysOfWeek.push('2');
+            } else if ('{{section.course_days}}'[i] == 'W') {
+                daysOfWeek.push('3');
+            } else if ('{{section.course_days}}'[i] == 'R') {
+                daysOfWeek.push('4');
+            } else if ('{{section.course_days}}'[i] == 'F') {
+                daysOfWeek.push('5');
+            }
+        }
+        
         calendar.addEvent({
             title: "{{section.course_code}} {{section.course_type}}",
-            start: "05-05-2024",
-            end: "05-05-2024",
-            startTime: "{{section.course_start_time}}",
-            endTime: "{{section.course_end_time}}",
+            startTime: '{{section.course_start_time|time:"H:i:s"}}',
+            endTime: '{{section.course_end_time|time:"H:i:s"}}',
+            daysOfWeek: daysOfWeek,
         });
+        daysOfWeek = []
+        
+        console.log("{{section.course_code}}","{{section.course_type}}","{{section.course_start_date}}","{{section.course_end_date}}","{{section.course_start_time}}","{{section.course_end_time}}")
+        {% endfor %}{% endfor %}{% endfor %}
+
         calendar.render();
     });
 </script>
@@ -53,5 +52,19 @@
 <h1>Schedule Options</h1>
 
 <div id="calendar"></div>
+
+{% for choice in valid_course_options %}
+
+    {% for course in choice %}
+
+        {% for section in course %}
+
+            <p>{{section.course_code}} {{section.course_type}} {{section.course_start_date}} {{section.course_end_date}} {{section.course_start_time}} {{section.course_end_time}}</p>
+
+        {% endfor %}
+    {% endfor %}
+    <p>--------------------------</p>
+        
+{% endfor %}
 
 {% endblock %}

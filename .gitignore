@@ -1,3 +1,5 @@
 venv
 media
 node_modules
+schedule/app_schedule_creator/migrations
+schedule/app_schedule_creator/__pycache__
