@@ -12,14 +12,11 @@
                 right: "dayGridMonth,timeGridWeek,timeGridDay",
             },
             initialView: "timeGridWeek",
-            dateClick: function() {
-                alert('a day has been clicked!');
-              },
         });
         let daysOfWeek = [];
-        {% for choice in valid_course_options %}{% for course in choice %}{% for section in course %}
+        {% for course in valid_course_options.1 %}{% for section in course %}
         console.log('{{section.course_start_time|time:"H:i:s"}}',"{{section.course_start_time}}")
-        
+
         for (let i = 0; i < '{{section.course_days}}'.length; i++) {
             if ('{{section.course_days}}'[i] == 'M') {
                 daysOfWeek.push('1');
@@ -39,11 +36,13 @@
             startTime: '{{section.course_start_time|time:"H:i:s"}}',
             endTime: '{{section.course_end_time|time:"H:i:s"}}',
             daysOfWeek: daysOfWeek,
+            startRecur: '{{section.course_start_date|date:"Y-m-d"}}',
+            endRecur: '{{section.course_end_date|date:"Y-m-d"}}',
         });
         daysOfWeek = []
         
         console.log("{{section.course_code}}","{{section.course_type}}","{{section.course_start_date}}","{{section.course_end_date}}","{{section.course_start_time}}","{{section.course_end_time}}")
-        {% endfor %}{% endfor %}{% endfor %}
+        {% endfor %}{% endfor %}
 
         calendar.render();
     });
