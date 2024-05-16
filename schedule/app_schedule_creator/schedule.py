@@ -42,11 +42,11 @@ def get_course_options(courses,term,year):
         for course in time:
             for course_option in course:
                 #print(course_option[4])
-                if "M" in course_option.course_days: days["M"].append([str(course_option.course_start_time), str(course_option.course_end_time)])
-                if "T" in course_option.course_days: days["T"].append([str(course_option.course_start_time), str(course_option.course_end_time)])
-                if "W" in course_option.course_days: days["W"].append([str(course_option.course_start_time), str(course_option.course_end_time)])
-                if "R" in course_option.course_days: days["R"].append([str(course_option.course_start_time), str(course_option.course_end_time)])
-                if "F" in course_option.course_days: days["F"].append([str(course_option.course_start_time), str(course_option.course_end_time)])
+                if "M" in course_option.course_days: days["M"].append([str(course_option.course_start_time), str(course_option.course_end_time), str(course_option.course_start_date), str(course_option.course_end_date)])
+                if "T" in course_option.course_days: days["T"].append([str(course_option.course_start_time), str(course_option.course_end_time), str(course_option.course_start_date), str(course_option.course_end_date)])
+                if "W" in course_option.course_days: days["W"].append([str(course_option.course_start_time), str(course_option.course_end_time), str(course_option.course_start_date), str(course_option.course_end_date)])
+                if "R" in course_option.course_days: days["R"].append([str(course_option.course_start_time), str(course_option.course_end_time), str(course_option.course_start_date), str(course_option.course_end_date)])
+                if "F" in course_option.course_days: days["F"].append([str(course_option.course_start_time), str(course_option.course_end_time), str(course_option.course_start_date), str(course_option.course_end_date)])
 
         valid = True
         for day in days:
