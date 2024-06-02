@@ -7,7 +7,6 @@ def get_course_options(courses,term,year):
 
     for course in courses:
         course_options = Course.objects.filter(course_code=course, course_term=term, course_year=year)
-        #print(course_options[0])
         modules = []
         module_counts = {}
         # get all modules needed for course & how many options there are
@@ -26,12 +25,10 @@ def get_course_options(courses,term,year):
         
         times.append(options)
 
-    #print("\nTIMES: ")
     # get all possible combinations of course options for all courses
     valid_times = []
     all_times = list(itertools.product(*times)) 
     for time in all_times:
-        #print(time)
         days = {
             "M": [],
             "T": [],
@@ -40,8 +37,8 @@ def get_course_options(courses,term,year):
             "F": []
         }
         for course in time:
+            # organise course options by day
             for course_option in course:
-                #print(course_option[4])
                 if "M" in course_option.course_days: days["M"].append([str(course_option.course_start_time), str(course_option.course_end_time), str(course_option.course_start_date), str(course_option.course_end_date)])
                 if "T" in course_option.course_days: days["T"].append([str(course_option.course_start_time), str(course_option.course_end_time), str(course_option.course_start_date), str(course_option.course_end_date)])
                 if "W" in course_option.course_days: days["W"].append([str(course_option.course_start_time), str(course_option.course_end_time), str(course_option.course_start_date), str(course_option.course_end_date)])
@@ -50,18 +47,37 @@ def get_course_options(courses,term,year):
 
         valid = True
         for day in days:
+            # sort class times by start time
             days[day] = sorted(days[day])
             for i in range(len(days[day]) - 1):
-                if days[day][i][1] > days[day][i + 1][0]:
+                # eliminate overlapping class times from the valid courses
+                # if ((overlapping or start times are the same) and not (end time of first class is before start time of second class)
+                #if ((days[day][i][1] > days[day][i + 1][0]) or days[day][i][0] == days[day][i + 1][0]) and not (days[day][i][2] < days[day][i + 1][3]):
+                #    valid = False
+                #    break
+
+
+                # 0: start time
+                # 1: end time
+                # 2: start date
+                # 3: end date
+
+                # if classes start/end at the same time, and start/end at the same dates, they are invalid
+                if (days[day][i][0] == days[day][i+1][0] or days[day][i][1] == days[day][i+1][1]) and (days[day][i][2] == days[day][i+1][2] or days[day][i][3] == days[day][i+1][3]):
+                    print(days[day][i], " --> ", days[day][i+1])
                     valid = False
+                    break
+                ## if classes are within 
+                #elif days[day][i][0] < days[day][i+1][0] and days[day][i][1] > days[day][i+1][0]:
+                #    valid = False
+                #    break
+
             
         if valid:
             valid_times.append(time)
-        #print(days)
 
 
     for v in valid_times:
-        #print("\n")
         for course in v:
             for module in course:
                 #print(module)
