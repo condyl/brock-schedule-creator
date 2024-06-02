@@ -24,7 +24,6 @@
             num = calendars.length - 1;
         }
 
-        console.log(num)
         let calendar = calendars[num];
         calendar.render();
     }
@@ -62,7 +61,6 @@
         daysOfWeek = [];
 
         {% for course in valid_option %}{% for section in course %}
-        console.log('{{section.course_start_time|time:"H:i:s"}}',"{{section.course_start_time}}")
 
         for (let i = 0; i < '{{section.course_days}}'.length; i++) {
             if ('{{section.course_days}}'[i] == 'M') {
@@ -97,8 +95,6 @@
         calendars.push(calendar);
         {% endfor %}
         calendar.render();
-        
-        console.log(calendars)
     });
 
     document.getElementById("clear").addEventListener("click", function () {
