@@ -64,7 +64,6 @@ def get_course_options(courses,term,year):
 
                 # if classes start/end at the same time, and start/end at the same dates, they are invalid
                 if (days[day][i][0] == days[day][i+1][0] or days[day][i][1] == days[day][i+1][1]) and (days[day][i][2] == days[day][i+1][2] or days[day][i][3] == days[day][i+1][3]):
-                    print(days[day][i], " --> ", days[day][i+1])
                     valid = False
                     break
                 ## if classes are within 
@@ -75,13 +74,6 @@ def get_course_options(courses,term,year):
             
         if valid:
             valid_times.append(time)
-
-
-    for v in valid_times:
-        for course in v:
-            for module in course:
-                #print(module)
-                pass
 
     return valid_times
 
