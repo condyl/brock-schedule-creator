@@ -76,16 +76,24 @@ def parseDepartmentData(term, department, formatted_courses):
         if not course_option:
             continue
 
-        course_type_key = course_option['course_type'][:3]
-        if course_type_key not in module_counts:
-            module_counts[course_type_key] = []
+        course_key = course_option['course_code'] + "" + course_option['course_type'][:3]
+        if course_key not in module_counts:
+            module_counts[course_key] = []
 
-        module_counts[course_type_key].append(course_option)
+        module_counts[course_key].append(course_option)
 
     return module_counts
 
+
 def generateCourseCombos(module_counts):
-    return list(itertools.product(*module_counts.values())) if module_counts else []
+    course_combos = []
+    courses = set(key.split('_')[0] for key in module_counts)
+
+    for course in courses:
+        components = [module_counts[key] for key in module_counts if key.startswith(course)]
+        course_combos.append(list(itertools.product(*components)))
+
+    return course_combos
 
 # Sorts/organizes course options by the day of the week
 def sortByDays(courses):
@@ -130,7 +138,7 @@ def generateSchedules(courses, term):
     for department in departments:
         module_counts = parseDepartmentData(term, department, formatted_courses)
         if module_counts:
-            all_combinations.append(generateCourseCombos(module_counts))
+            all_combinations.extend(generateCourseCombos(module_counts))
 
     valid_times = []
     for combination in itertools.product(*all_combinations):
