@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from . import models
 import csv
-from .schedule import get_course_options
+from .schedule import generateSchedules
 
 # Create your views here.
 def home(request):
@@ -17,7 +17,7 @@ def schedule(request):
     courses = courses_str.split(',')
     for i in range(len(courses)):
         courses[i] = courses[i].strip()
-    valid_course_options = get_course_options(courses, semester, 2024)
+    valid_course_options = generateSchedules(courses, semester)
     context['valid_course_options'] = valid_course_options
     return render(request, 'schedule.html', context=context)
 
