@@ -1,12 +1,19 @@
-{% extends "base.html" %} {% block title %} Schedule Choices {% endblock %} {% block css %}none.css{% endblock %} 
+{% extends "base.html" %} {% block title %} Schedule Choices {% endblock %} {% block css %}schedule.css{% endblock %} 
 {% block content %}
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
 <h1>Schedule Options</h1>
-<button id="clear">clear</button>
-<button id="next">next</button>
-<button id="prev">prev</button>
+
+<div class="cal-navigation">
+    <button id="prev">Previous</button>
+    <div id="page">
+        <span id="current-page">1</span>
+        <span> of </span>
+        <span id="total-pages">1</span>
+    </div>
+    <button id="next">Next</button>
+</div>
 
 <script>
     calendars = [];
@@ -18,11 +25,18 @@
             num = num - 1;
         }
 
-        if (num < 0) {
+        if (num <= 0) {
             num = 0;
-        } else if (num >= calendars.length) {
+            document.getElementById("prev").disabled = true;
+        } else if (num >= calendars.length - 1) {
             num = calendars.length - 1;
+            document.getElementById("next").disabled = true;
+        } else {
+            document.getElementById("prev").disabled = false;
+            document.getElementById("next").disabled = false;
         }
+
+        document.getElementById("current-page").innerHTML = num + 1;
 
         let calendar = calendars[num];
         calendar.render();
@@ -47,16 +61,19 @@
         var calendar;
         var daysOfWeek = [];
 
+        document.getElementById("total-pages").innerHTML = '{{valid_course_options|length}}';
+
         {% for valid_option in valid_course_options %}
         
         calendarEl = document.getElementById("calendar");
         calendar = new FullCalendar.Calendar(calendarEl, {
             headerToolbar: {
-                left: "prev,next today",
+                left: "",
                 center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay",
+                right: "",
             },
             initialView: "timeGridWeek",
+            initialDate: "2024-05-01",
         });
         daysOfWeek = [];
 
@@ -78,13 +95,18 @@
         
         calendar.addEvent({
             title: "{{section.course_code}} {{section.course_type}}",
-            startTime: '{{section.course_start_time|time:"H:i:s"}}',
-            endTime: '{{section.course_end_time|time:"H:i:s"}}',
+            startTime: '{{section.course_start_time}}',
+            endTime: '{{section.course_end_time}}',
             daysOfWeek: daysOfWeek,
-            startRecur: '{{section.course_start_date|date:"Y-m-d"}}',
-            endRecur: '{{section.course_end_date|date:"Y-m-d"}}',
-            {% if "LEC" not in section.course_type %}
+            startRecur: '{{section.start_date}}',
+            endRecur: '{{section.end_date}}',
+            {% if "LEC" in section.course_type or "BLD" in section.course_type or "ASY" in section.course_type or "ASO" in section.course_type or "SYN" in section.course_type %}
+            title: "{{section.course_code}} {{section.course_type}} Sec: {{section.course_section}} \n Instructor: {{section.course_instructor}}",
+            color: '#0f5454',
+            {% elif "TUT" in section.course_type or "SEM" in section.course_type%}
             color: 'green',
+            {% else %}
+            color: '#9061f9',
             {% endif %}
         });
         daysOfWeek = []
@@ -94,11 +116,8 @@
         {% endfor %}{% endfor %}
         calendars.push(calendar);
         {% endfor %}
-        calendar.render();
-    });
-
-    document.getElementById("clear").addEventListener("click", function () {
-        clearCalendar();
+        
+        updateCalendar("prev");
     });
 
     document.getElementById("next").addEventListener("click", function () {
